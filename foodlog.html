@@ -7,585 +7,149 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg: #141210;
-  --surface: #1c1916;
-  --surface2: #232019;
-  --surface3: #2a261f;
-  --border: #2e2a22;
-  --border2: #3a352a;
-  --text: #ede8df;
-  --text2: #b5ae9f;
-  --muted: #6b6456;
-  --muted2: #8a8070;
-  --amber: #e8a93a;
-  --amber-dim: #c48a25;
-  --green: #7ec99a;
-  --blue: #7ab3d4;
-  --terra: #d4825a;
-  --red: #d45a5a;
-  --cal-bg: #2a2310;
-  --pro-bg: #0f2318;
-  --carb-bg: #0f1c28;
-  --fat-bg: #281508;
+  --bg: #141210; --surface: #1c1916; --surface2: #232019;
+  --border: #2e2a22; --border2: #3a352a; --text: #ede8df; --text2: #b5ae9f;
+  --muted: #6b6456; --muted2: #8a8070; --amber: #e8a93a; --amber-dim: #c48a25;
+  --green: #7ec99a; --blue: #7ab3d4; --terra: #d4825a; --red: #d45a5a;
+  --cal-bg: #2a2310; --pro-bg: #0f2318; --carb-bg: #0f1c28; --fat-bg: #281508;
 }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
-  padding-bottom: 100px;
-}
-
-/* ── HEADER ── */
-.header {
-  padding: 20px 20px 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-.header-left h1 {
-  font-family: 'Fraunces', serif;
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--amber);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.header-left .tagline {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 3px;
-  letter-spacing: 0.04em;
-}
-.sync-btn {
-  background: none;
-  border: 1px solid var(--border2);
-  color: var(--muted2);
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
+body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; max-width: 480px; margin: 0 auto; padding-bottom: 110px; }
+.header { padding: 20px 20px 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.header-left h1 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 300; color: var(--amber); letter-spacing: -0.02em; line-height: 1; }
+.header-left .tagline { font-size: 11px; color: var(--muted); margin-top: 3px; letter-spacing: 0.04em; }
+.sync-btn { background: none; border: 1px solid var(--border2); color: var(--muted2); border-radius: 8px; padding: 6px 10px; font-size: 11px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
 .sync-btn:hover { border-color: var(--amber); color: var(--amber); }
-.sync-btn.syncing { color: var(--amber); border-color: var(--amber); animation: pulse 1s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
 .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
-.sync-dot.ok { background: var(--green); }
-.sync-dot.err { background: var(--red); }
-
-/* ── DATE NAV ── */
-.date-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px 0;
-}
-.date-arrow {
-  background: none;
-  border: none;
-  color: var(--muted2);
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px 10px;
-  border-radius: 8px;
-  transition: all 0.15s;
-  line-height: 1;
-}
+.sync-dot.ok { background: var(--green); } .sync-dot.err { background: var(--red); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.date-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 0; }
+.date-arrow { background: none; border: none; color: var(--muted2); font-size: 20px; cursor: pointer; padding: 4px 10px; border-radius: 8px; transition: all 0.15s; }
 .date-arrow:hover { color: var(--amber); background: var(--surface2); }
 .date-arrow:disabled { color: var(--border2); cursor: default; background: none; }
-.date-display {
-  text-align: center;
-  cursor: pointer;
-}
-.date-display .day-name {
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
-  font-weight: 300;
-  color: var(--text);
-  line-height: 1;
-}
-.date-display .date-str {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 2px;
-  letter-spacing: 0.04em;
-}
+.date-display { text-align: center; cursor: pointer; }
+.date-display .day-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 300; color: var(--text); line-height: 1; }
+.date-display .date-str { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; }
 .date-display.today .day-name { color: var(--amber); }
-input[type="date"]#datePicker {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-}
-
-/* ── MACRO TOTALS ── */
-.totals-wrap {
-  padding: 16px 20px 0;
-}
-.totals-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.macro-card {
-  border-radius: 12px;
-  padding: 10px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-}
+input[type="date"]#datePicker { position: absolute; opacity: 0; pointer-events: none; width: 0; height: 0; }
+.totals-wrap { padding: 16px 20px 0; }
+.totals-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.macro-card { border-radius: 12px; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; }
 .macro-card.cal { background: var(--cal-bg); border: 1px solid #4a3d10; }
 .macro-card.pro { background: var(--pro-bg); border: 1px solid #0f3825; }
 .macro-card.carb { background: var(--carb-bg); border: 1px solid #0f2e44; }
 .macro-card.fat { background: var(--fat-bg); border: 1px solid #3d1f08; }
-.macro-val {
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
-  font-weight: 400;
-  line-height: 1;
-}
-.macro-card.cal .macro-val { color: var(--amber); }
-.macro-card.pro .macro-val { color: var(--green); }
-.macro-card.carb .macro-val { color: var(--blue); }
-.macro-card.fat .macro-val { color: var(--terra); }
-.macro-lbl {
-  font-size: 9px;
-  color: var(--muted2);
-  margin-top: 3px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.macro-remain {
-  font-size: 9px;
-  color: var(--muted);
-  margin-top: 2px;
-}
+.macro-val { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 400; line-height: 1; }
+.macro-card.cal .macro-val { color: var(--amber); } .macro-card.pro .macro-val { color: var(--green); }
+.macro-card.carb .macro-val { color: var(--blue); } .macro-card.fat .macro-val { color: var(--terra); }
+.macro-lbl { font-size: 9px; color: var(--muted2); margin-top: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+.macro-remain { font-size: 9px; color: var(--muted); margin-top: 2px; }
 .macro-remain.over { color: var(--red); }
-.progress-bar {
-  width: 100%;
-  height: 3px;
-  background: var(--border);
-  border-radius: 2px;
-  margin-top: 6px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 0.4s ease;
-}
-.macro-card.cal .progress-fill { background: var(--amber); }
-.macro-card.pro .progress-fill { background: var(--green); }
-.macro-card.carb .progress-fill { background: var(--blue); }
-.macro-card.fat .progress-fill { background: var(--terra); }
-
-/* ── ENTRY LIST ── */
-.entries-section {
-  padding: 20px 20px 0;
-}
-.entries-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-.entries-title {
-  font-family: 'Fraunces', serif;
-  font-size: 15px;
-  font-weight: 300;
-  color: var(--text2);
-  letter-spacing: 0.01em;
-}
-.copy-btn {
-  background: none;
-  border: 1px solid var(--border2);
-  color: var(--muted2);
-  border-radius: 8px;
-  padding: 5px 10px;
-  font-size: 11px;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.copy-btn:hover { border-color: var(--amber); color: var(--amber); }
-.copy-btn.copied { border-color: var(--green); color: var(--green); }
-
-.empty-state {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-}
-.empty-state .icon { font-size: 32px; margin-bottom: 10px; opacity: 0.4; }
-
-.entry-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 10px;
-  animation: slideIn 0.2s ease;
-}
+.progress-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+.macro-card.cal .progress-fill { background: var(--amber); } .macro-card.pro .progress-fill { background: var(--green); }
+.macro-card.carb .progress-fill { background: var(--blue); } .macro-card.fat .progress-fill { background: var(--terra); }
+.entries-section { padding: 20px 20px 0; }
+.entries-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.entries-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 300; color: var(--text2); }
+.copy-btn { background: none; border: 1px solid var(--border2); color: var(--muted2); border-radius: 8px; padding: 5px 10px; font-size: 11px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.2s; }
+.copy-btn:hover { border-color: var(--amber); color: var(--amber); } .copy-btn.copied { border-color: var(--green); color: var(--green); }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.empty-state .icon { font-size: 32px; margin-bottom: 10px; opacity: 0.4; display: block; }
+.entry-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px; animation: slideIn 0.2s ease; }
 @keyframes slideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.entry-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-}
-.entry-time {
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: 0.06em;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-.entry-desc {
-  font-size: 13px;
-  color: var(--text2);
-  line-height: 1.4;
-  flex: 1;
-}
-.entry-photo {
-  width: 52px;
-  height: 52px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid var(--border2);
-  flex-shrink: 0;
-}
-.delete-btn {
-  background: none;
-  border: none;
-  color: var(--border2);
-  cursor: pointer;
-  font-size: 18px;
-  line-height: 1;
-  padding: 0 2px;
-  transition: color 0.15s;
-  flex-shrink: 0;
-}
+.entry-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.entry-time { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 4px; text-transform: uppercase; }
+.entry-desc { font-size: 13px; color: var(--text2); line-height: 1.4; }
+.entry-photo { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border2); flex-shrink: 0; }
+.delete-btn { background: none; border: none; color: var(--border2); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 2px; transition: color 0.15s; flex-shrink: 0; }
 .delete-btn:hover { color: var(--red); }
-
-.entry-macros {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-.entry-macro-pill {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 500;
-}
-.pill-cal { background: var(--cal-bg); color: var(--amber); border: 1px solid #4a3d1040; }
-.pill-pro { background: var(--pro-bg); color: var(--green); border: 1px solid #0f382540; }
-.pill-carb { background: var(--carb-bg); color: var(--blue); border: 1px solid #0f2e4440; }
-.pill-fat { background: var(--fat-bg); color: var(--terra); border: 1px solid #3d1f0840; }
-
-.entry-note {
-  font-size: 10px;
-  color: var(--muted);
-  margin-top: 6px;
-  font-style: italic;
-}
-.entry-items {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
-}
-.entry-item-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--muted);
-  padding: 1px 0;
-}
+.entry-macros { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.entry-macro-pill { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+.pill-cal { background: var(--cal-bg); color: var(--amber); } .pill-pro { background: var(--pro-bg); color: var(--green); }
+.pill-carb { background: var(--carb-bg); color: var(--blue); } .pill-fat { background: var(--fat-bg); color: var(--terra); }
+.entry-note { font-size: 10px; color: var(--muted); margin-top: 6px; font-style: italic; }
+.entry-items { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.entry-item-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); padding: 1px 0; }
 .entry-item-row span:first-child { color: var(--muted2); }
-
-/* ── ADD ENTRY ── */
-.add-section {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 480px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 12px 16px 20px;
-  z-index: 100;
-}
-
-.input-row {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-}
-.text-input-wrap {
-  flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 12px;
-  padding: 10px 12px;
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  transition: border-color 0.2s;
-}
+.add-section { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 16px 24px; z-index: 100; }
+.input-row { display: flex; gap: 8px; align-items: flex-end; }
+.text-input-wrap { flex: 1; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 10px 12px; display: flex; align-items: flex-end; gap: 8px; transition: border-color 0.2s; }
 .text-input-wrap:focus-within { border-color: var(--amber-dim); }
-.text-input-wrap textarea {
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  resize: none;
-  flex: 1;
-  max-height: 100px;
-  line-height: 1.4;
-  min-height: 22px;
-}
+.text-input-wrap textarea { background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; resize: none; flex: 1; max-height: 100px; line-height: 1.4; min-height: 22px; }
 .text-input-wrap textarea::placeholder { color: var(--muted); }
-
-.photo-preview-wrap {
-  position: relative;
-  display: none;
-}
+.photo-preview-wrap { position: relative; display: none; }
 .photo-preview-wrap.has-photo { display: block; }
-.photo-preview {
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid var(--border2);
-}
-.photo-clear {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: var(--red);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  font-size: 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.icon-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  color: var(--muted2);
-  border-radius: 12px;
-  width: 44px;
-  height: 44px;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-  flex-shrink: 0;
-}
+.photo-preview { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border2); }
+.photo-clear { position: absolute; top: -5px; right: -5px; background: var(--red); color: white; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.icon-btn { background: var(--surface2); border: 1px solid var(--border2); color: var(--muted2); border-radius: 12px; width: 44px; height: 44px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0; }
 .icon-btn:hover { border-color: var(--amber); color: var(--amber); }
-
-.submit-btn {
-  background: var(--amber);
-  border: none;
-  color: var(--bg);
-  border-radius: 12px;
-  width: 44px;
-  height: 44px;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-  flex-shrink: 0;
-  font-weight: 600;
-}
-.submit-btn:hover { background: var(--amber-dim); }
-.submit-btn:disabled { background: var(--border2); color: var(--muted); cursor: default; }
+.submit-btn { background: var(--amber); border: none; color: var(--bg); border-radius: 12px; width: 44px; height: 44px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0; font-weight: 700; }
+.submit-btn:hover { background: var(--amber-dim); } .submit-btn:disabled { background: var(--border2); color: var(--muted); cursor: default; }
 .submit-btn.loading { animation: pulse 0.8s infinite; }
-
-/* ── LOADING OVERLAY ── */
-.analyzing-toast {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 14px;
-  padding: 16px 24px;
-  font-size: 13px;
-  color: var(--text2);
-  display: none;
-  z-index: 200;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-}
+.analyzing-toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--surface2); border: 1px solid var(--border2); border-radius: 14px; padding: 16px 24px; font-size: 13px; color: var(--text2); display: none; z-index: 200; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
 .analyzing-toast.show { display: block; }
-.analyzing-toast .spin { display: inline-block; animation: spin 1s linear infinite; margin-right: 8px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── CONFIG MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 300;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+.spin { display: inline-block; animation: spin 1s linear infinite; margin-right: 8px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 300; display: none; align-items: flex-end; justify-content: center; padding: 0; }
 .modal-overlay.show { display: flex; }
-.modal {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 18px;
-  padding: 24px;
-  width: 100%;
-  max-width: 340px;
-}
-.modal h2 {
-  font-family: 'Fraunces', serif;
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--amber);
-  margin-bottom: 16px;
-}
-.modal label {
-  display: block;
-  font-size: 11px;
-  color: var(--muted2);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  margin-top: 12px;
-}
-.modal input[type="text"] {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 10px 12px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  outline: none;
-}
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 18px 18px 0 0; padding: 24px 20px 32px; width: 100%; max-width: 480px; }
+.modal h2 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 300; color: var(--amber); margin-bottom: 16px; }
+.modal label { display: block; font-size: 11px; color: var(--muted2); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; margin-top: 12px; }
+.modal input[type="text"] { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 10px 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
 .modal input:focus { border-color: var(--amber-dim); }
-.modal-btns {
-  display: flex;
-  gap: 8px;
-  margin-top: 20px;
-}
-.modal-btn {
-  flex: 1;
-  padding: 11px;
-  border-radius: 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
-  border: none;
-}
-.modal-btn.primary { background: var(--amber); color: var(--bg); }
-.modal-btn.primary:hover { background: var(--amber-dim); }
+.modal-btns { display: flex; gap: 8px; margin-top: 20px; }
+.modal-btn { flex: 1; padding: 11px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: none; }
+.modal-btn.primary { background: var(--amber); color: var(--bg); } .modal-btn.primary:hover { background: var(--amber-dim); }
 .modal-btn.secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
-.modal-btn.secondary:hover { border-color: var(--amber); color: var(--amber); }
-
-/* ── FILE INPUT ── */
 #photoInput, #cameraInput { display: none; }
 
-/* ── SCROLLABLE MAIN ── */
-.main { padding-bottom: 10px; }
+/* CONFIRM SHEET */
+.confirm-sheet { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px 20px 0 0; padding: 20px 18px 36px; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; }
+.confirm-sheet h2 { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 300; color: var(--amber); margin-bottom: 2px; }
+.confirm-subtitle { font-size: 11px; color: var(--muted); margin-bottom: 14px; letter-spacing: 0.03em; line-height: 1.5; }
+.confirm-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+.confirm-item-name { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-weight: 500; }
+.confirm-macros-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.confirm-macro label { display: block; font-size: 9px; color: var(--muted2); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 3px; text-align: center; }
+.confirm-macro input[type=number] { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 6px; padding: 5px 2px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; text-align: center; outline: none; -moz-appearance: textfield; }
+.confirm-macro input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+.confirm-macro input[type=number]:focus { border-color: var(--amber-dim); }
+.confirm-totals { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0; padding: 10px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); }
+.confirm-total-pill { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+.confirm-note { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 14px; line-height: 1.5; padding: 8px 10px; background: var(--surface2); border-radius: 8px; border-left: 2px solid var(--amber-dim); }
+.confirm-btns { display: flex; gap: 8px; }
 </style>
 </head>
 <body>
-
 <div class="main">
-  <!-- HEADER -->
   <div class="header">
     <div class="header-left">
       <h1>FoodLog</h1>
       <div class="tagline">track easy, eat smart</div>
     </div>
-    <button class="sync-btn" onclick="openConfig()" title="Configure JSONBin">
+    <button class="sync-btn" onclick="openConfig()">
       <div class="sync-dot" id="syncDot"></div>
       <span id="syncLabel">setup</span>
     </button>
   </div>
-
-  <!-- DATE NAV -->
   <div class="date-nav">
-    <button class="date-arrow" onclick="changeDate(-1)">‹</button>
+    <button class="date-arrow" onclick="changeDate(-1)">&#8249;</button>
     <div class="date-display" id="dateDisplay" onclick="document.getElementById('datePicker').showPicker()">
-      <div class="day-name" id="dayName">—</div>
-      <div class="date-str" id="dateStr">—</div>
+      <div class="day-name" id="dayName">&#8212;</div>
+      <div class="date-str" id="dateStr">&#8212;</div>
     </div>
-    <button class="date-arrow" id="nextBtn" onclick="changeDate(1)">›</button>
+    <button class="date-arrow" id="nextBtn" onclick="changeDate(1)">&#8250;</button>
     <input type="date" id="datePicker" onchange="onDatePick(this.value)">
   </div>
-
-  <!-- MACRO TOTALS -->
   <div class="totals-wrap">
     <div class="totals-grid">
-      <div class="macro-card cal">
-        <div class="macro-val" id="totalCal">0</div>
-        <div class="macro-lbl">kcal</div>
-        <div class="macro-remain" id="remainCal">2750 left</div>
-        <div class="progress-bar"><div class="progress-fill" id="progCal" style="width:0%"></div></div>
-      </div>
-      <div class="macro-card pro">
-        <div class="macro-val" id="totalPro">0</div>
-        <div class="macro-lbl">protein</div>
-        <div class="macro-remain" id="remainPro">220g left</div>
-        <div class="progress-bar"><div class="progress-fill" id="progPro" style="width:0%"></div></div>
-      </div>
-      <div class="macro-card carb">
-        <div class="macro-val" id="totalCarb">0</div>
-        <div class="macro-lbl">carbs</div>
-        <div class="macro-remain" id="remainCarb">265g left</div>
-        <div class="progress-bar"><div class="progress-fill" id="progCarb" style="width:0%"></div></div>
-      </div>
-      <div class="macro-card fat">
-        <div class="macro-val" id="totalFat">0</div>
-        <div class="macro-lbl">fat</div>
-        <div class="macro-remain" id="remainFat">70g left</div>
-        <div class="progress-bar"><div class="progress-fill" id="progFat" style="width:0%"></div></div>
-      </div>
+      <div class="macro-card cal"><div class="macro-val" id="totalCal">0</div><div class="macro-lbl">kcal</div><div class="macro-remain" id="remainCal">2750 left</div><div class="progress-bar"><div class="progress-fill" id="progCal" style="width:0%"></div></div></div>
+      <div class="macro-card pro"><div class="macro-val" id="totalPro">0</div><div class="macro-lbl">protein</div><div class="macro-remain" id="remainPro">220g left</div><div class="progress-bar"><div class="progress-fill" id="progPro" style="width:0%"></div></div></div>
+      <div class="macro-card carb"><div class="macro-val" id="totalCarb">0</div><div class="macro-lbl">carbs</div><div class="macro-remain" id="remainCarb">265g left</div><div class="progress-bar"><div class="progress-fill" id="progCarb" style="width:0%"></div></div></div>
+      <div class="macro-card fat"><div class="macro-val" id="totalFat">0</div><div class="macro-lbl">fat</div><div class="macro-remain" id="remainFat">70g left</div><div class="progress-bar"><div class="progress-fill" id="progFat" style="width:0%"></div></div></div>
     </div>
   </div>
-
-  <!-- ENTRIES -->
   <div class="entries-section">
     <div class="entries-header">
       <div class="entries-title">Today's entries</div>
@@ -595,40 +159,31 @@ input[type="date"]#datePicker {
   </div>
 </div>
 
-<!-- ADD ENTRY BAR -->
 <div class="add-section">
   <div class="input-row">
     <div class="text-input-wrap">
       <div class="photo-preview-wrap" id="photoPreviewWrap">
         <img id="photoPreview" class="photo-preview" src="" alt="">
-        <button class="photo-clear" onclick="clearPhoto()">×</button>
+        <button class="photo-clear" onclick="clearPhoto()">x</button>
       </div>
-      <textarea id="entryInput" placeholder="Describe what you ate…" rows="1" oninput="autoResize(this)" onkeydown="onEnterKey(event)"></textarea>
+      <textarea id="entryInput" placeholder="Describe what you ate..." rows="1" oninput="autoResize(this)" onkeydown="onEnterKey(event)"></textarea>
     </div>
-    <!-- Camera -->
-    <button class="icon-btn" onclick="document.getElementById('cameraInput').click()" title="Camera">📷</button>
-    <!-- Gallery -->
-    <button class="icon-btn" onclick="document.getElementById('photoInput').click()" title="Upload photo">🖼️</button>
-    <!-- Submit -->
-    <button class="submit-btn" id="submitBtn" onclick="submitEntry()" title="Add entry">↑</button>
+    <button class="icon-btn" onclick="document.getElementById('cameraInput').click()">&#128247;</button>
+    <button class="icon-btn" onclick="document.getElementById('photoInput').click()">&#128444;&#65039;</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitEntry()">&#8593;</button>
   </div>
   <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(this)">
   <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handlePhoto(this)">
 </div>
 
-<!-- ANALYZING TOAST -->
-<div class="analyzing-toast" id="analyzingToast">
-  <span class="spin">⏳</span> Estimating macros…
-</div>
+<div class="analyzing-toast" id="analyzingToast"><span class="spin">&#9203;</span> Analysing your food...</div>
 
-<!-- CONFIG MODAL -->
+<!-- JSONBin config modal -->
 <div class="modal-overlay" id="configModal">
   <div class="modal">
     <h2>JSONBin Setup</h2>
-    <label>Bin ID</label>
-    <input type="text" id="cfgBinId" placeholder="e.g. 64abc123def456789">
-    <label>Master Key</label>
-    <input type="text" id="cfgMasterKey" placeholder="$2a$10$...">
+    <label>Bin ID</label><input type="text" id="cfgBinId" placeholder="e.g. 64abc123def456789">
+    <label>Master Key</label><input type="text" id="cfgMasterKey" placeholder="$2a$10$...">
     <div class="modal-btns">
       <button class="modal-btn secondary" onclick="closeConfig()">Cancel</button>
       <button class="modal-btn primary" onclick="saveConfig()">Save</button>
@@ -636,373 +191,224 @@ input[type="date"]#datePicker {
   </div>
 </div>
 
+<!-- Confirm sheet -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-sheet" id="confirmSheet"></div>
+</div>
+
 <script>
-// ── TARGETS ──
-const TARGETS = { cal: 2750, pro: 220, carb: 265, fat: 70 };
+const TARGETS = { cal:2750, pro:220, carb:265, fat:70 };
+const WORKER_URL = 'https://foodlog-proxy.four154128671.workers.dev';
+let currentDate = todayStr(), allData = {}, pendingPhotoBase64 = null, pendingPhotoMime = null;
+let pendingEntry = null;
 
-// ── STATE ──
-let currentDate = todayStr();
-let allData = {}; // { "YYYY-MM-DD": [ entries ] }
-let pendingPhotoBase64 = null;
-let pendingPhotoMime = null;
-
-// ── DATE HELPERS ──
-function todayStr() {
-  const d = new Date();
-  return d.toISOString().split('T')[0];
-}
-function formatDisplay(dateStr) {
-  const d = new Date(dateStr + 'T12:00:00');
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return {
-    day: days[d.getDay()],
-    date: `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
-  };
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function formatDisplay(ds) {
+  const d = new Date(ds+'T12:00:00');
+  return { day:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()], date:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getDate()+', '+d.getFullYear() };
 }
 function updateDateUI() {
-  const { day, date } = formatDisplay(currentDate);
-  document.getElementById('dayName').textContent = day;
-  document.getElementById('dateStr').textContent = date;
-  const el = document.getElementById('dateDisplay');
-  el.classList.toggle('today', currentDate === todayStr());
-  document.getElementById('nextBtn').disabled = currentDate >= todayStr();
-  document.getElementById('datePicker').value = currentDate;
-  const el2 = document.querySelector('.entries-title');
-  el2.textContent = currentDate === todayStr() ? "Today's entries" : `Entries — ${date}`;
+  const {day,date}=formatDisplay(currentDate);
+  document.getElementById('dayName').textContent=day;
+  document.getElementById('dateStr').textContent=date;
+  document.getElementById('dateDisplay').classList.toggle('today',currentDate===todayStr());
+  document.getElementById('nextBtn').disabled=currentDate>=todayStr();
+  document.getElementById('datePicker').value=currentDate;
+  document.querySelector('.entries-title').textContent=currentDate===todayStr()?"Today's entries":`Entries - ${date}`;
 }
-function changeDate(delta) {
-  const d = new Date(currentDate + 'T12:00:00');
-  d.setDate(d.getDate() + delta);
-  const next = d.toISOString().split('T')[0];
-  if (next <= todayStr()) {
-    currentDate = next;
-    updateDateUI();
-    renderEntries();
-    updateTotals();
-  }
+function changeDate(d) {
+  const dt=new Date(currentDate+'T12:00:00');dt.setDate(dt.getDate()+d);
+  const next=dt.toISOString().split('T')[0];
+  if(next<=todayStr()){currentDate=next;updateDateUI();renderEntries();updateTotals();}
 }
-function onDatePick(val) {
-  if (val <= todayStr()) {
-    currentDate = val;
-    updateDateUI();
-    renderEntries();
-    updateTotals();
-  }
-}
-
-// ── ENTRIES ──
-function getEntries() {
-  return allData[currentDate] || [];
-}
-function setEntries(entries) {
-  allData[currentDate] = entries;
-}
+function onDatePick(v){if(v<=todayStr()){currentDate=v;updateDateUI();renderEntries();updateTotals();}}
+function getEntries(){return allData[currentDate]||[];}
+function setEntries(e){allData[currentDate]=e;}
 
 function renderEntries() {
-  const list = document.getElementById('entriesList');
-  const entries = getEntries();
-  if (entries.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="icon">🍽️</div>No entries yet.<br>Type what you ate or snap a photo.</div>`;
-    return;
-  }
-  list.innerHTML = entries.map((e, i) => `
+  const list=document.getElementById('entriesList'),entries=getEntries();
+  if(!entries.length){list.innerHTML='<div class="empty-state"><span class="icon">&#127869;&#65039;</span>No entries yet.<br>Type what you ate or snap a photo.</div>';return;}
+  list.innerHTML=entries.map((e,i)=>`
     <div class="entry-card">
       <div class="entry-top">
-        <div style="flex:1">
-          <div class="entry-time">${e.time}</div>
-          <div class="entry-desc">${escHtml(e.description)}</div>
-        </div>
-        ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="food">` : ''}
-        <button class="delete-btn" onclick="deleteEntry(${i})">×</button>
+        <div style="flex:1"><div class="entry-time">${e.time}</div><div class="entry-desc">${esc(e.description)}</div></div>
+        ${e.photo?`<img class="entry-photo" src="${e.photo}" alt="food">`:''}
+        <button class="delete-btn" onclick="deleteEntry(${i})">x</button>
       </div>
-      ${e.items && e.items.length > 1 ? `
-        <div class="entry-items">
-          ${e.items.map(it => `
-            <div class="entry-item-row">
-              <span>${escHtml(it.name)}</span>
-              <span>${it.calories}cal · ${it.protein}p · ${it.carbs}c · ${it.fat}f</span>
-            </div>
-          `).join('')}
-        </div>
-      ` : ''}
+      ${e.items&&e.items.length>1?`<div class="entry-items">${e.items.map(it=>`<div class="entry-item-row"><span>${esc(it.name)}</span><span>${it.calories}cal / ${it.protein}p / ${it.carbs}c / ${it.fat}f</span></div>`).join('')}</div>`:''}
       <div class="entry-macros">
         <span class="entry-macro-pill pill-cal">${Math.round(e.totals.calories)} kcal</span>
         <span class="entry-macro-pill pill-pro">${Math.round(e.totals.protein)}g P</span>
         <span class="entry-macro-pill pill-carb">${Math.round(e.totals.carbs)}g C</span>
         <span class="entry-macro-pill pill-fat">${Math.round(e.totals.fat)}g F</span>
       </div>
-      ${e.note ? `<div class="entry-note">↳ ${escHtml(e.note)}</div>` : ''}
-    </div>
-  `).join('');
+      ${e.note?`<div class="entry-note">&#8627; ${esc(e.note)}</div>`:''}
+    </div>`).join('');
 }
 
 function updateTotals() {
-  const entries = getEntries();
-  const tot = entries.reduce((a, e) => ({
-    cal: a.cal + (e.totals?.calories || 0),
-    pro: a.pro + (e.totals?.protein || 0),
-    carb: a.carb + (e.totals?.carbs || 0),
-    fat: a.fat + (e.totals?.fat || 0),
-  }), { cal: 0, pro: 0, carb: 0, fat: 0 });
-
-  const pairs = [
-    ['Cal', 'cal', 'Cal', 'kcal'],
-    ['Pro', 'pro', 'Pro', 'g'],
-    ['Carb', 'carb', 'Carb', 'g'],
-    ['Fat', 'fat', 'Fat', 'g'],
-  ];
-  pairs.forEach(([id, key, label, unit]) => {
-    const val = Math.round(tot[key]);
-    const target = TARGETS[key];
-    const remain = target - val;
-    document.getElementById(`total${id}`).textContent = val;
-    const remEl = document.getElementById(`remain${id}`);
-    if (remain >= 0) {
-      remEl.textContent = `${remain}${unit} left`;
-      remEl.className = 'macro-remain';
-    } else {
-      remEl.textContent = `${Math.abs(remain)}${unit} over`;
-      remEl.className = 'macro-remain over';
-    }
-    const pct = Math.min(100, (val / target) * 100);
-    document.getElementById(`prog${id}`).style.width = pct + '%';
+  const tot=getEntries().reduce((a,e)=>({cal:a.cal+(e.totals?.calories||0),pro:a.pro+(e.totals?.protein||0),carb:a.carb+(e.totals?.carbs||0),fat:a.fat+(e.totals?.fat||0)}),{cal:0,pro:0,carb:0,fat:0});
+  [['Cal','cal','kcal'],['Pro','pro','g'],['Carb','carb','g'],['Fat','fat','g']].forEach(([id,key,unit])=>{
+    const val=Math.round(tot[key]),remain=TARGETS[key]-val;
+    document.getElementById(`total${id}`).textContent=val;
+    const re=document.getElementById(`remain${id}`);
+    re.textContent=remain>=0?`${remain}${unit} left`:`${Math.abs(remain)}${unit} over`;
+    re.className='macro-remain'+(remain<0?' over':'');
+    document.getElementById(`prog${id}`).style.width=Math.min(100,(val/TARGETS[key])*100)+'%';
   });
 }
 
-function deleteEntry(i) {
-  const entries = getEntries();
-  entries.splice(i, 1);
-  setEntries(entries);
-  renderEntries();
-  updateTotals();
-  saveToCloud();
-}
+function deleteEntry(i){const e=getEntries();e.splice(i,1);setEntries(e);renderEntries();updateTotals();saveToCloud();}
 
-// ── ADD ENTRY ──
 async function submitEntry() {
-  const input = document.getElementById('entryInput');
-  const text = input.value.trim();
-  if (!text && !pendingPhotoBase64) return;
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.classList.add('loading');
+  const input=document.getElementById('entryInput'),text=input.value.trim();
+  if(!text&&!pendingPhotoBase64)return;
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.classList.add('loading');
   document.getElementById('analyzingToast').classList.add('show');
-
   try {
-    const result = await estimateMacros(text || 'food shown in photo', pendingPhotoBase64, pendingPhotoMime);
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    const entry = {
-      id: Date.now(),
-      time: timeStr,
-      description: text || 'Photo entry',
-      photo: pendingPhotoBase64 ? `data:${pendingPhotoMime};base64,${pendingPhotoBase64}` : null,
-      items: result.items,
-      totals: result.totals,
-      note: result.note || null,
+    const result=await estimateMacros(text||'food shown in photo',pendingPhotoBase64,pendingPhotoMime);
+    const timeStr=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    pendingEntry={
+      id:Date.now(),time:timeStr,
+      description:text||'Photo entry',
+      photo:pendingPhotoBase64?`data:${pendingPhotoMime};base64,${pendingPhotoBase64}`:null,
+      items:result.items,totals:result.totals,note:result.note||null
     };
-
-    const entries = getEntries();
-    entries.push(entry);
-    setEntries(entries);
-    renderEntries();
-    updateTotals();
-    saveToCloud();
-
-    input.value = '';
-    autoResize(input);
-    clearPhoto();
-  } catch (err) {
-    alert('Could not estimate macros: ' + err.message);
+    document.getElementById('analyzingToast').classList.remove('show');
+    showConfirm(pendingEntry);
+    input.value='';autoResize(input);clearPhoto();
+  } catch(err) {
+    alert('Could not estimate macros: '+err.message);
   } finally {
-    btn.disabled = false;
-    btn.classList.remove('loading');
+    btn.disabled=false;btn.classList.remove('loading');
     document.getElementById('analyzingToast').classList.remove('show');
   }
 }
 
-function onEnterKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    submitEntry();
-  }
+function showConfirm(entry) {
+  const sheet=document.getElementById('confirmSheet');
+  const items=entry.items||[{name:entry.description,calories:entry.totals.calories,protein:entry.totals.protein,carbs:entry.totals.carbs,fat:entry.totals.fat}];
+
+  sheet.innerHTML=`
+    <h2>Look right?</h2>
+    <div class="confirm-subtitle">${esc(entry.description)}${entry.note?'<br><em>'+esc(entry.note)+'</em>':''}</div>
+    <div id="confirmItems">
+      ${items.map((it,i)=>`
+        <div class="confirm-item">
+          <div class="confirm-item-name">${esc(it.name)}</div>
+          <div class="confirm-macros-grid">
+            <div class="confirm-macro"><label>kcal</label><input type="number" id="ci_cal_${i}" value="${Math.round(it.calories)}" onchange="recalcTotals()"></div>
+            <div class="confirm-macro"><label>protein</label><input type="number" id="ci_pro_${i}" value="${Math.round(it.protein)}" onchange="recalcTotals()"></div>
+            <div class="confirm-macro"><label>carbs</label><input type="number" id="ci_carb_${i}" value="${Math.round(it.carbs)}" onchange="recalcTotals()"></div>
+            <div class="confirm-macro"><label>fat</label><input type="number" id="ci_fat_${i}" value="${Math.round(it.fat)}" onchange="recalcTotals()"></div>
+          </div>
+        </div>`).join('')}
+    </div>
+    <div class="confirm-totals" id="confirmTotals"></div>
+    <div class="confirm-btns">
+      <button class="modal-btn secondary" onclick="closeConfirm()">Discard</button>
+      <button class="modal-btn primary" onclick="confirmEntry()">Add to log</button>
+    </div>`;
+
+  document.getElementById('confirmModal').classList.add('show');
+  recalcTotals();
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-}
-
-// ── PHOTO ──
-function handlePhoto(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const dataUrl = e.target.result;
-    const parts = dataUrl.split(',');
-    const mime = parts[0].match(/:(.*?);/)[1];
-    const b64 = parts[1];
-    pendingPhotoBase64 = b64;
-    pendingPhotoMime = mime;
-    document.getElementById('photoPreview').src = dataUrl;
-    document.getElementById('photoPreviewWrap').classList.add('has-photo');
-  };
-  reader.readAsDataURL(file);
-  input.value = '';
-}
-
-function clearPhoto() {
-  pendingPhotoBase64 = null;
-  pendingPhotoMime = null;
-  document.getElementById('photoPreview').src = '';
-  document.getElementById('photoPreviewWrap').classList.remove('has-photo');
-}
-
-// ── AI ESTIMATION ──
-async function estimateMacros(description, photoB64, photoMime) {
-  const SYSTEM = `You are a nutrition estimator. The user describes food or shows a photo. Make a confident best-guess estimate of calories, protein, carbs, and fat. Never refuse. Use reasonable portion assumptions.
-
-Respond ONLY with valid JSON, no markdown, no extra text:
-{
-  "items": [{ "name": "string", "calories": number, "protein": number, "carbs": number, "fat": number }],
-  "totals": { "calories": number, "protein": number, "carbs": number, "fat": number },
-  "note": "optional one-sentence assumption note or null"
-}`;
-
-  const userContent = [];
-  if (photoB64) {
-    userContent.push({ type: 'image', source: { type: 'base64', media_type: photoMime, data: photoB64 } });
-  }
-  userContent.push({ type: 'text', text: description || 'Estimate macros for what is shown.' });
-
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: SYSTEM,
-      messages: [{ role: 'user', content: userContent }]
-    })
+function recalcTotals() {
+  const items=pendingEntry.items||[{name:pendingEntry.description,...pendingEntry.totals,protein:pendingEntry.totals.protein}];
+  let cal=0,pro=0,carb=0,fat=0;
+  items.forEach((_,i)=>{
+    cal+=parseFloat(document.getElementById(`ci_cal_${i}`)?.value||0);
+    pro+=parseFloat(document.getElementById(`ci_pro_${i}`)?.value||0);
+    carb+=parseFloat(document.getElementById(`ci_carb_${i}`)?.value||0);
+    fat+=parseFloat(document.getElementById(`ci_fat_${i}`)?.value||0);
   });
+  document.getElementById('confirmTotals').innerHTML=`
+    <span class="confirm-total-pill pill-cal">${Math.round(cal)} kcal</span>
+    <span class="confirm-total-pill pill-pro">${Math.round(pro)}g P</span>
+    <span class="confirm-total-pill pill-carb">${Math.round(carb)}g C</span>
+    <span class="confirm-total-pill pill-fat">${Math.round(fat)}g F</span>`;
+  pendingEntry._editedTotals={calories:cal,protein:pro,carbs:carb,fat:fat};
+  pendingEntry._editedItems=items.map((_,i)=>({
+    ...items[i],
+    calories:parseFloat(document.getElementById(`ci_cal_${i}`)?.value||0),
+    protein:parseFloat(document.getElementById(`ci_pro_${i}`)?.value||0),
+    carbs:parseFloat(document.getElementById(`ci_carb_${i}`)?.value||0),
+    fat:parseFloat(document.getElementById(`ci_fat_${i}`)?.value||0),
+  }));
+}
 
-  if (!resp.ok) throw new Error(`API error ${resp.status}`);
-  const data = await resp.json();
-  const text = data.content.map(c => c.text || '').join('').replace(/```json|```/g, '').trim();
+function confirmEntry() {
+  if(!pendingEntry)return;
+  const entry={...pendingEntry,totals:pendingEntry._editedTotals||pendingEntry.totals,items:pendingEntry._editedItems||pendingEntry.items};
+  const entries=getEntries();entries.push(entry);setEntries(entries);
+  renderEntries();updateTotals();saveToCloud();
+  closeConfirm();pendingEntry=null;
+}
+
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('show');pendingEntry=null;}
+
+function onEnterKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitEntry();}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+
+function handlePhoto(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{const parts=e.target.result.split(',');pendingPhotoMime=parts[0].match(/:(.*?);/)[1];pendingPhotoBase64=parts[1];document.getElementById('photoPreview').src=e.target.result;document.getElementById('photoPreviewWrap').classList.add('has-photo');};
+  reader.readAsDataURL(file);input.value='';
+}
+function clearPhoto(){pendingPhotoBase64=null;pendingPhotoMime=null;document.getElementById('photoPreview').src='';document.getElementById('photoPreviewWrap').classList.remove('has-photo');}
+
+async function estimateMacros(description,photoB64,photoMime) {
+  const SYSTEM=`You are a nutrition estimator. The user describes food or shows a photo. Make a confident best-guess estimate. Never refuse. Use reasonable portion assumptions. If you can identify a brand or product from packaging, use its known nutritional data. If a nutrition label is visible, read it exactly.\nRespond ONLY with valid JSON, no markdown:\n{"items":[{"name":"string","calories":number,"protein":number,"carbs":number,"fat":number}],"totals":{"calories":number,"protein":number,"carbs":number,"fat":number},"note":"one sentence explaining key assumptions, or null if label was read directly"}`;
+  const userContent=[];
+  if(photoB64)userContent.push({type:'image',source:{type:'base64',media_type:photoMime,data:photoB64}});
+  userContent.push({type:'text',text:description});
+  const resp=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM,messages:[{role:'user',content:userContent}]})});
+  if(!resp.ok)throw new Error(`API error ${resp.status}`);
+  const data=await resp.json();
+  if(data.error)throw new Error(data.error.message||'API error');
+  const text=data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
   return JSON.parse(text);
 }
 
-// ── COPY FOR CLAUDE ──
-function copyForClaude() {
-  const entries = getEntries();
-  const { day, date } = formatDisplay(currentDate);
-  const tot = entries.reduce((a, e) => ({
-    cal: a.cal + (e.totals?.calories || 0),
-    pro: a.pro + (e.totals?.protein || 0),
-    carb: a.carb + (e.totals?.carbs || 0),
-    fat: a.fat + (e.totals?.fat || 0),
-  }), { cal: 0, pro: 0, carb: 0, fat: 0 });
-
-  let text = `📊 FoodLog — ${day}, ${date}\n`;
-  text += `\nDAILY TOTAL: ${Math.round(tot.cal)} kcal | ${Math.round(tot.pro)}g P | ${Math.round(tot.carb)}g C | ${Math.round(tot.fat)}g F\n`;
-  text += `TARGETS:     ${TARGETS.cal} kcal | ${TARGETS.pro}g P | ${TARGETS.carb}g C | ${TARGETS.fat}g F\n`;
-  text += `REMAINING:   ${TARGETS.cal - Math.round(tot.cal)} kcal | ${TARGETS.pro - Math.round(tot.pro)}g P | ${TARGETS.carb - Math.round(tot.carb)}g C | ${TARGETS.fat - Math.round(tot.fat)}g F\n\n`;
-  text += `ENTRIES:\n`;
-  entries.forEach(e => {
-    text += `\n[${e.time}] ${e.description}\n`;
-    text += `  → ${Math.round(e.totals.calories)} kcal | ${Math.round(e.totals.protein)}g P | ${Math.round(e.totals.carbs)}g C | ${Math.round(e.totals.fat)}g F\n`;
-    if (e.note) text += `  ↳ ${e.note}\n`;
-  });
-
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.textContent = 'Copied! ✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy for Claude'; btn.classList.remove('copied'); }, 2000);
-  });
+function copyForClaude(){
+  const entries=getEntries(),{day,date}=formatDisplay(currentDate);
+  const tot=entries.reduce((a,e)=>({cal:a.cal+(e.totals?.calories||0),pro:a.pro+(e.totals?.protein||0),carb:a.carb+(e.totals?.carbs||0),fat:a.fat+(e.totals?.fat||0)}),{cal:0,pro:0,carb:0,fat:0});
+  let text=`FoodLog - ${day}, ${date}\n\nDAILY TOTAL: ${Math.round(tot.cal)} kcal | ${Math.round(tot.pro)}g P | ${Math.round(tot.carb)}g C | ${Math.round(tot.fat)}g F\nTARGETS:     ${TARGETS.cal} kcal | ${TARGETS.pro}g P | ${TARGETS.carb}g C | ${TARGETS.fat}g F\nREMAINING:   ${TARGETS.cal-Math.round(tot.cal)} kcal | ${TARGETS.pro-Math.round(tot.pro)}g P | ${TARGETS.carb-Math.round(tot.carb)}g C | ${TARGETS.fat-Math.round(tot.fat)}g F\n\nENTRIES:\n`;
+  entries.forEach(e=>{text+=`\n[${e.time}] ${e.description}\n  -> ${Math.round(e.totals.calories)} kcal | ${Math.round(e.totals.protein)}g P | ${Math.round(e.totals.carbs)}g C | ${Math.round(e.totals.fat)}g F\n`;if(e.note)text+=`  Note: ${e.note}\n`;});
+  navigator.clipboard.writeText(text).then(()=>{const btn=document.getElementById('copyBtn');btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy for Claude';btn.classList.remove('copied');},2000);});
 }
 
-// ── JSONBIN CLOUD SYNC ──
-function getConfig() {
-  return {
-    binId: localStorage.getItem('foodlog_bin_id') || '',
-    masterKey: localStorage.getItem('foodlog_master_key') || '',
-  };
+function getConfig(){return{binId:localStorage.getItem('foodlog_bin_id')||'',masterKey:localStorage.getItem('foodlog_master_key')||''};}
+function updateSyncUI(state){
+  const dot=document.getElementById('syncDot'),lbl=document.getElementById('syncLabel');
+  dot.className='sync-dot';
+  if(state==='ok'){dot.classList.add('ok');lbl.textContent='synced';}
+  else if(state==='err'){dot.classList.add('err');lbl.textContent='error';}
+  else if(state==='syncing'){lbl.textContent='syncing...';}
+  else{lbl.textContent='setup';}
 }
-
-function updateSyncUI(state) {
-  const dot = document.getElementById('syncDot');
-  const lbl = document.getElementById('syncLabel');
-  dot.className = 'sync-dot';
-  if (state === 'ok') { dot.classList.add('ok'); lbl.textContent = 'synced'; }
-  else if (state === 'err') { dot.classList.add('err'); lbl.textContent = 'error'; }
-  else if (state === 'syncing') { lbl.textContent = 'syncing…'; }
-  else { lbl.textContent = 'setup'; }
-}
-
-async function loadFromCloud() {
-  const { binId, masterKey } = getConfig();
-  if (!binId || !masterKey) { updateSyncUI('none'); renderEntries(); updateTotals(); return; }
+async function loadFromCloud(){
+  const{binId,masterKey}=getConfig();
+  if(!binId||!masterKey){updateSyncUI('none');renderEntries();updateTotals();return;}
   updateSyncUI('syncing');
-  try {
-    const resp = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-      headers: { 'X-Master-Key': masterKey }
-    });
-    if (!resp.ok) throw new Error();
-    const data = await resp.json();
-    allData = data.record || {};
-    updateSyncUI('ok');
-  } catch {
-    updateSyncUI('err');
-  }
-  renderEntries();
-  updateTotals();
+  try{const resp=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':masterKey}});if(!resp.ok)throw new Error();allData=(await resp.json()).record||{};updateSyncUI('ok');}
+  catch{updateSyncUI('err');}
+  renderEntries();updateTotals();
 }
-
-async function saveToCloud() {
-  const { binId, masterKey } = getConfig();
-  if (!binId || !masterKey) return;
+async function saveToCloud(){
+  const{binId,masterKey}=getConfig();if(!binId||!masterKey)return;
   updateSyncUI('syncing');
-  try {
-    const resp = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': masterKey },
-      body: JSON.stringify(allData)
-    });
-    if (!resp.ok) throw new Error();
-    updateSyncUI('ok');
-  } catch {
-    updateSyncUI('err');
-  }
+  try{const resp=await fetch(`https://api.jsonbin.io/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':masterKey},body:JSON.stringify(allData)});if(!resp.ok)throw new Error();updateSyncUI('ok');}
+  catch{updateSyncUI('err');}
 }
+function openConfig(){const{binId,masterKey}=getConfig();document.getElementById('cfgBinId').value=binId;document.getElementById('cfgMasterKey').value=masterKey;document.getElementById('configModal').classList.add('show');}
+function closeConfig(){document.getElementById('configModal').classList.remove('show');}
+function saveConfig(){localStorage.setItem('foodlog_bin_id',document.getElementById('cfgBinId').value.trim());localStorage.setItem('foodlog_master_key',document.getElementById('cfgMasterKey').value.trim());closeConfig();loadFromCloud();}
+function esc(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// ── CONFIG MODAL ──
-function openConfig() {
-  const { binId, masterKey } = getConfig();
-  document.getElementById('cfgBinId').value = binId;
-  document.getElementById('cfgMasterKey').value = masterKey;
-  document.getElementById('configModal').classList.add('show');
-}
-function closeConfig() {
-  document.getElementById('configModal').classList.remove('show');
-}
-function saveConfig() {
-  localStorage.setItem('foodlog_bin_id', document.getElementById('cfgBinId').value.trim());
-  localStorage.setItem('foodlog_master_key', document.getElementById('cfgMasterKey').value.trim());
-  closeConfig();
-  loadFromCloud();
-}
-
-// ── UTILS ──
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── INIT ──
 updateDateUI();
 loadFromCloud();
 </script>
