@@ -108,9 +108,16 @@ input[type="date"]#datePicker { position: absolute; opacity: 0; pointer-events: 
 .confirm-sheet { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px 20px 0 0; padding: 20px 18px 36px; width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto; }
 .confirm-sheet h2 { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 300; color: var(--amber); margin-bottom: 2px; }
 .confirm-subtitle { font-size: 11px; color: var(--muted); margin-bottom: 14px; letter-spacing: 0.03em; line-height: 1.5; }
-.confirm-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
-.confirm-item-name { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-weight: 500; }
-.confirm-macros-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.confirm-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; position: relative; }
+.confirm-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.confirm-item-name { font-size: 12px; color: var(--text2); font-weight: 500; flex: 1; }
+.confirm-item-delete { background: none; border: none; color: var(--border2); cursor: pointer; font-size: 16px; line-height: 1; padding: 0 2px; transition: color 0.15s; flex-shrink: 0; }
+.confirm-item-delete:hover { color: var(--red); }
+.confirm-macros-grid { display: grid; grid-template-columns: 1.2fr repeat(4,1fr); gap: 6px; }
+.confirm-weight-wrap { display: flex; flex-direction: column; }
+.confirm-weight-wrap label { display: block; font-size: 9px; color: var(--amber-dim); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 3px; text-align: center; }
+.confirm-weight-wrap input { width: 100%; background: var(--bg); border: 1px solid var(--amber-dim); border-radius: 6px; padding: 5px 2px; color: var(--amber); font-family: 'DM Sans', sans-serif; font-size: 13px; text-align: center; outline: none; -moz-appearance: textfield; font-weight: 600; }
+.confirm-weight-wrap input:focus { border-color: var(--amber); }
 .confirm-macro label { display: block; font-size: 9px; color: var(--muted2); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 3px; text-align: center; }
 .confirm-macro input[type=number] { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 6px; padding: 5px 2px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; text-align: center; outline: none; -moz-appearance: textfield; }
 .confirm-macro input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
@@ -286,25 +293,17 @@ async function submitEntry() {
   }
 }
 
+// Live editable items array for confirm sheet
+let confirmItems = [];
+
 function showConfirm(entry) {
   const sheet=document.getElementById('confirmSheet');
-  const items=entry.items||[{name:entry.description,calories:entry.totals.calories,protein:entry.totals.protein,carbs:entry.totals.carbs,fat:entry.totals.fat}];
+  confirmItems=(entry.items||[{name:entry.description,calories:entry.totals.calories,protein:entry.totals.protein,carbs:entry.totals.carbs,fat:entry.totals.fat}]).map(it=>({...it,_baseCalories:it.calories,_baseProtein:it.protein,_baseCarbs:it.carbs,_baseFat:it.fat,_weight:100}));
 
   sheet.innerHTML=`
     <h2>Look right?</h2>
     <div class="confirm-subtitle">${esc(entry.description)}${entry.note?'<br><em>'+esc(entry.note)+'</em>':''}</div>
-    <div id="confirmItems">
-      ${items.map((it,i)=>`
-        <div class="confirm-item">
-          <div class="confirm-item-name">${esc(it.name)}</div>
-          <div class="confirm-macros-grid">
-            <div class="confirm-macro"><label>kcal</label><input type="number" id="ci_cal_${i}" value="${Math.round(it.calories)}" onchange="recalcTotals()"></div>
-            <div class="confirm-macro"><label>protein</label><input type="number" id="ci_pro_${i}" value="${Math.round(it.protein)}" onchange="recalcTotals()"></div>
-            <div class="confirm-macro"><label>carbs</label><input type="number" id="ci_carb_${i}" value="${Math.round(it.carbs)}" onchange="recalcTotals()"></div>
-            <div class="confirm-macro"><label>fat</label><input type="number" id="ci_fat_${i}" value="${Math.round(it.fat)}" onchange="recalcTotals()"></div>
-          </div>
-        </div>`).join('')}
-    </div>
+    <div id="confirmItems"></div>
     <div class="confirm-totals" id="confirmTotals"></div>
     <div class="confirm-btns">
       <button class="modal-btn secondary" onclick="closeConfirm()">Discard</button>
@@ -312,13 +311,59 @@ function showConfirm(entry) {
     </div>`;
 
   document.getElementById('confirmModal').classList.add('show');
+  renderConfirmItems();
+}
+
+function renderConfirmItems() {
+  const container=document.getElementById('confirmItems');
+  container.innerHTML=confirmItems.map((it,i)=>`
+    <div class="confirm-item" id="ci_row_${i}">
+      <div class="confirm-item-header">
+        <div class="confirm-item-name">${esc(it.name)}</div>
+        <button class="confirm-item-delete" onclick="removeConfirmItem(${i})">&#215;</button>
+      </div>
+      <div class="confirm-macros-grid">
+        <div class="confirm-weight-wrap">
+          <label>weight %</label>
+          <input type="number" id="ci_wt_${i}" value="100" min="1" max="500" onchange="onWeightChange(${i})">
+        </div>
+        <div class="confirm-macro"><label>kcal</label><input type="number" id="ci_cal_${i}" value="${Math.round(it.calories)}" onchange="onMacroChange(${i})"></div>
+        <div class="confirm-macro"><label>protein</label><input type="number" id="ci_pro_${i}" value="${Math.round(it.protein)}" onchange="onMacroChange(${i})"></div>
+        <div class="confirm-macro"><label>carbs</label><input type="number" id="ci_carb_${i}" value="${Math.round(it.carbs)}" onchange="onMacroChange(${i})"></div>
+        <div class="confirm-macro"><label>fat</label><input type="number" id="ci_fat_${i}" value="${Math.round(it.fat)}" onchange="onMacroChange(${i})"></div>
+      </div>
+    </div>`).join('');
   recalcTotals();
 }
 
+function onWeightChange(i) {
+  const wt=parseFloat(document.getElementById(`ci_wt_${i}`)?.value||100)/100;
+  const it=confirmItems[i];
+  document.getElementById(`ci_cal_${i}`).value=Math.round(it._baseCalories*wt);
+  document.getElementById(`ci_pro_${i}`).value=Math.round(it._baseProtein*wt);
+  document.getElementById(`ci_carb_${i}`).value=Math.round(it._baseCarbs*wt);
+  document.getElementById(`ci_fat_${i}`).value=Math.round(it._baseFat*wt);
+  recalcTotals();
+}
+
+function onMacroChange(i) {
+  // manual override — update base values so weight slider stays consistent
+  confirmItems[i]._baseCalories=parseFloat(document.getElementById(`ci_cal_${i}`)?.value||0);
+  confirmItems[i]._baseProtein=parseFloat(document.getElementById(`ci_pro_${i}`)?.value||0);
+  confirmItems[i]._baseCarbs=parseFloat(document.getElementById(`ci_carb_${i}`)?.value||0);
+  confirmItems[i]._baseFat=parseFloat(document.getElementById(`ci_fat_${i}`)?.value||0);
+  document.getElementById(`ci_wt_${i}`).value=100;
+  recalcTotals();
+}
+
+function removeConfirmItem(i) {
+  confirmItems.splice(i,1);
+  renderConfirmItems();
+}
+
 function recalcTotals() {
-  const items=pendingEntry.items||[{name:pendingEntry.description,...pendingEntry.totals,protein:pendingEntry.totals.protein}];
   let cal=0,pro=0,carb=0,fat=0;
-  items.forEach((_,i)=>{
+  confirmItems.forEach((_,i)=>{
     cal+=parseFloat(document.getElementById(`ci_cal_${i}`)?.value||0);
     pro+=parseFloat(document.getElementById(`ci_pro_${i}`)?.value||0);
     carb+=parseFloat(document.getElementById(`ci_carb_${i}`)?.value||0);
@@ -330,8 +375,8 @@ function recalcTotals() {
     <span class="confirm-total-pill pill-carb">${Math.round(carb)}g C</span>
     <span class="confirm-total-pill pill-fat">${Math.round(fat)}g F</span>`;
   pendingEntry._editedTotals={calories:cal,protein:pro,carbs:carb,fat:fat};
-  pendingEntry._editedItems=items.map((_,i)=>({
-    ...items[i],
+  pendingEntry._editedItems=confirmItems.map((_,i)=>({
+    name:confirmItems[i].name,
     calories:parseFloat(document.getElementById(`ci_cal_${i}`)?.value||0),
     protein:parseFloat(document.getElementById(`ci_pro_${i}`)?.value||0),
     carbs:parseFloat(document.getElementById(`ci_carb_${i}`)?.value||0),
@@ -344,7 +389,7 @@ function confirmEntry() {
   const entry={...pendingEntry,totals:pendingEntry._editedTotals||pendingEntry.totals,items:pendingEntry._editedItems||pendingEntry.items};
   const entries=getEntries();entries.push(entry);setEntries(entries);
   renderEntries();updateTotals();saveToCloud();
-  closeConfirm();pendingEntry=null;
+  closeConfirm();pendingEntry=null;confirmItems=[];
 }
 
 function closeConfirm(){document.getElementById('confirmModal').classList.remove('show');pendingEntry=null;}
