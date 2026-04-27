@@ -583,7 +583,7 @@ function saveSettings() {
 }
 
 // JSONBIN
-function getConfig(){return{binId:localStorage.getItem('foodlog_bin_id')||'',masterKey:localStorage.getItem('foodlog_master_key')||''};}
+function getConfig(){return{binId:localStorage.getItem('foodlog_bin_id')||'69eed85caaba8821973fbe49',masterKey:localStorage.getItem('foodlog_master_key')||'$2a$10$O7oW0lYtp956/on9QP2vn.QZyrXAPrVj/ubAanzM02gjSdb9Tu2NK'};}
 function updateSyncUI(state){
   const dot=document.getElementById('syncDot'),lbl=document.getElementById('syncLabel');
   dot.className='sync-dot';
@@ -597,7 +597,7 @@ async function loadFromCloud() {
   if(!binId||!masterKey){updateSyncUI('none');renderEntries();updateTotals();renderWeightBar();return;}
   updateSyncUI('syncing');
   try{
-    const resp=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':masterKey}});
+    const resp=await fetch(`${WORKER_URL}/jsonbin/v3/b/${binId}/latest`);
     if(!resp.ok)throw new Error();
     const rec=(await resp.json()).record||{};
     allData=rec.food||{};
@@ -610,7 +610,7 @@ async function saveToCloud() {
   const{binId,masterKey}=getConfig();if(!binId||!masterKey)return;
   updateSyncUI('syncing');
   try{
-    const resp=await fetch(`https://api.jsonbin.io/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':masterKey},body:JSON.stringify({food:allData,weight:weightLog})});
+    const resp=await fetch(`${WORKER_URL}/jsonbin/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({food:allData,weight:weightLog})});
     if(!resp.ok)throw new Error();updateSyncUI('ok');
   }catch{updateSyncUI('err');}
 }
