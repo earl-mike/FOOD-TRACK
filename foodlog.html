@@ -330,6 +330,7 @@ function getGoal() {
 // STATE
 let currentDate = todayStr(), allData = {}, weightLog = [];
 let pendingPhotoBase64 = null, pendingPhotoMime = null, pendingEntry = null, confirmItems = [];
+let cloudLoaded = false;
 
 // DATE
 function todayStr() { return new Date().toISOString().split('T')[0]; }
@@ -594,7 +595,7 @@ function updateSyncUI(state){
 }
 async function loadFromCloud() {
   const{binId,masterKey}=getConfig();
-  if(!binId||!masterKey){updateSyncUI('none');renderEntries();updateTotals();renderWeightBar();return;}
+  if(!binId||!masterKey){cloudLoaded=true;updateSyncUI('none');renderEntries();updateTotals();renderWeightBar();return;}
   updateSyncUI('syncing');
   try{
     const resp=await fetch(`${WORKER_URL}/jsonbin/v3/b/${binId}/latest`);
@@ -604,15 +605,17 @@ async function loadFromCloud() {
     // Only update if we got real data back
     if(rec.food!==undefined) allData=rec.food||{};
     if(rec.weight!==undefined) weightLog=rec.weight||[];
+    cloudLoaded=true;
     updateSyncUI('ok');
   }catch(e){
     console.error('Load failed:',e);
+    cloudLoaded=true; // allow saves even if load fails
     updateSyncUI('err');
-    // Don't overwrite local state on error
   }
   renderEntries();updateTotals();renderWeightBar();
 }
 async function saveToCloud() {
+  if(!cloudLoaded){console.warn('Skipping save - cloud not loaded yet');return;}
   const{binId,masterKey}=getConfig();if(!binId||!masterKey)return;
   updateSyncUI('syncing');
   try{
