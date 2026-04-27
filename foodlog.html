@@ -598,21 +598,32 @@ async function loadFromCloud() {
   updateSyncUI('syncing');
   try{
     const resp=await fetch(`${WORKER_URL}/jsonbin/v3/b/${binId}/latest`);
-    if(!resp.ok)throw new Error();
-    const rec=(await resp.json()).record||{};
-    allData=rec.food||{};
-    weightLog=rec.weight||[];
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const json=await resp.json();
+    const rec=json.record||{};
+    // Only update if we got real data back
+    if(rec.food!==undefined) allData=rec.food||{};
+    if(rec.weight!==undefined) weightLog=rec.weight||[];
     updateSyncUI('ok');
-  }catch{updateSyncUI('err');}
+  }catch(e){
+    console.error('Load failed:',e);
+    updateSyncUI('err');
+    // Don't overwrite local state on error
+  }
   renderEntries();updateTotals();renderWeightBar();
 }
 async function saveToCloud() {
   const{binId,masterKey}=getConfig();if(!binId||!masterKey)return;
   updateSyncUI('syncing');
   try{
-    const resp=await fetch(`${WORKER_URL}/jsonbin/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({food:allData,weight:weightLog})});
-    if(!resp.ok)throw new Error();updateSyncUI('ok');
-  }catch{updateSyncUI('err');}
+    const payload={food:allData,weight:weightLog};
+    const resp=await fetch(`${WORKER_URL}/jsonbin/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    updateSyncUI('ok');
+  }catch(e){
+    console.error('Save failed:',e);
+    updateSyncUI('err');
+  }
 }
 function openConfig(){const{binId,masterKey}=getConfig();document.getElementById('cfgBinId').value=binId;document.getElementById('cfgMasterKey').value=masterKey;document.getElementById('configModal').classList.add('show');}
 function closeConfig(){document.getElementById('configModal').classList.remove('show');}
